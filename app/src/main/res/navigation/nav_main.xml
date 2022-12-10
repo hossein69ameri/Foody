@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/RecipesFragment">
+
+    <fragment
+        android:id="@+id/RecipesFragment"
+        android:name="com.example.nourifoodapp1.ui.home.RecipesFragment"
+        android:label="Food Recipes"
+        tools:layout="@layout/fragment_recipes" >
+    </fragment>
+    <fragment
+        android:id="@+id/FavoriteRecipesFragment"
+        android:name="com.example.nourifoodapp1.ui.favorite.FavoriteFragment"
+        android:label="Food Favorite"
+        tools:layout="@layout/fragment_favorite" >
+    </fragment>
+    <fragment
+        android:id="@+id/FoodJokeFragment"
+        android:name="com.example.nourifoodapp1.ui.detail.FoodJokeFragment"
+        android:label="Food Joke"
+        tools:layout="@layout/fragment_foodjoke" />
+</navigation>
