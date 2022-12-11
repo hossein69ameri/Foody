@@ -1,4 +1,9 @@
 package com.example.nourifoodapp1.data.server
 
-class RemoteDataSource () {
+import javax.inject.Inject
+
+class RemoteDataSource @Inject constructor(private val foodRecepieApi: FoodRecepieApi) {
+
+    suspend fun getRecepies(queries: Map<String, String>) = foodRecepieApi.getRecepies(queries)
+
 }
