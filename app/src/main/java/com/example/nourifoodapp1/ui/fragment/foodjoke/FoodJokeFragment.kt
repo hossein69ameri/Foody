@@ -1,4 +1,4 @@
-package com.example.nourifoodapp1.ui.detail
+package com.example.nourifoodapp1.ui.fragment.foodjoke
 
 import android.os.Bundle
 import android.view.LayoutInflater

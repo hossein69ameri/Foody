@@ -1,17 +1,17 @@
-package com.example.nourifoodapp1.ui.favorite
+package com.example.nourifoodapp1.ui.fragment.recepies
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
-import com.example.nourifoodapp1.databinding.FragmentFavoriteBinding
+import com.example.nourifoodapp1.databinding.FragmentRecipesBinding
 
-class FavoriteFragment : Fragment() {
-    private lateinit var binding: FragmentFavoriteBinding
+class RecipesFragment : Fragment() {
+    private lateinit var binding: FragmentRecipesBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentFavoriteBinding.inflate(layoutInflater)
+        binding = FragmentRecipesBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -19,5 +19,4 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
     }
-
 }

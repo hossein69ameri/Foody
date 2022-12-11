@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/RecipesFragment"
-        android:name="com.example.nourifoodapp1.ui.home.RecipesFragment"
+        android:name="com.example.nourifoodapp1.ui.fragment.recepies.RecipesFragment"
         android:label="Food Recipes"
         tools:layout="@layout/fragment_recipes" >
     </fragment>
     <fragment
         android:id="@+id/FavoriteRecipesFragment"
-        android:name="com.example.nourifoodapp1.ui.favorite.FavoriteFragment"
+        android:name="com.example.nourifoodapp1.ui.fragment.favorite.FavoriteFragment"
         android:label="Food Favorite"
         tools:layout="@layout/fragment_favorite" >
     </fragment>
     <fragment
         android:id="@+id/FoodJokeFragment"
-        android:name="com.example.nourifoodapp1.ui.detail.FoodJokeFragment"
+        android:name="com.example.nourifoodapp1.ui.fragment.foodjoke.FoodJokeFragment"
         android:label="Food Joke"
         tools:layout="@layout/fragment_foodjoke" />
 </navigation>
