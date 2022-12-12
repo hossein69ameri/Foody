@@ -34,7 +34,6 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        dataBinding true
         viewBinding true
     }
 }
@@ -82,16 +81,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
 
-
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
-
-    // Data binding
-    kapt "com.android.databinding:compiler:3.2.0-alpha10"
-    kapt "androidx.databinding:databinding-common:7.3.1"
 
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
 }

@@ -2,6 +2,7 @@ package com.example.nourifoodapp1.ui.fragment.recepies
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.foody.models.Result
 import com.example.nourifoodapp1.R
+import com.example.nourifoodapp1.data.model.ResponseFood
 import com.example.nourifoodapp1.databinding.RecipesRowLayoutBinding
 import javax.inject.Inject
 
-class RecepisAdapter @Inject constructor() : RecyclerView.Adapter<RecepisAdapter.ViewHolder>() {
+class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.ViewHolder>() {
 
     private lateinit var binding: RecipesRowLayoutBinding
-    private var foodList = emptyList<Result>()
+    private var foodList = emptyList<ResponseFood.Result>()
     private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,43 +39,43 @@ class RecepisAdapter @Inject constructor() : RecyclerView.Adapter<RecepisAdapter
 
     inner class ViewHolder : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n", "ResourceType")
-        fun bind(result: Result) {
+        fun bind(item: ResponseFood.Result) {
             binding.apply {
-                recipeImageView.load(result.image){
-                    crossfade(true)
-                    crossfade(500)
-                }
-                titleTextView.text = result.title
-                descriptionTextView.text = result.summary
-                heartTextView.text = result.aggregateLikes.toString()
-                clockTextView.text = result.readyInMinutes.toString()
-                if (result.vegan){
-                    leafTextView.setTextColor(ContextCompat.getColor(context, R.color.green))
-                    leafImageView.setBackgroundResource(ContextCompat.getColor(context,R.color.green))
-                }
+                   titleTextView.text = item.title
+                    recipeImageView.load(item.image){
+                        crossfade(true)
+                        crossfade(500)
+                    }
+                    descriptionTextView.text = item.summary
+                    heartTextView.text = item.aggregateLikes.toString()
+                    clockTextView.text = item.readyInMinutes.toString()
+                    if (item.vegan == true){
+                    leafImageView.setBackgroundResource(ContextCompat.getColor(context, R.color.green))
+                     leafTextView.setTextColor(ContextCompat.getColor(context,R.color.green))
+                    }
                 root.setOnClickListener {
                     onItemClickListener?.let {
-                        it(result)
+                        it(item)
                     }
                 }
             }
         }
     }
 
-    private var onItemClickListener: ((Result) -> Unit)? = null
+    private var onItemClickListener: ((ResponseFood.Result) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Result) -> Unit) {
+    fun setOnItemClickListener(listener: (ResponseFood.Result) -> Unit) {
         onItemClickListener = listener
     }
 
-    fun setData(data: List<Result>) {
+    fun setData(data: List<ResponseFood.Result>) {
         val moviesDiffUtil = MoviesDiffUtils(foodList, data)
         val diffUtils = DiffUtil.calculateDiff(moviesDiffUtil)
         foodList = data
         diffUtils.dispatchUpdatesTo(this)
     }
 
-    class MoviesDiffUtils(private val oldItem: List<Result>, private val newItem: List<Result>) : DiffUtil.Callback() {
+    class MoviesDiffUtils(private val oldItem: List<ResponseFood.Result>, private val newItem: List<ResponseFood.Result>) : DiffUtil.Callback() {
         override fun getOldListSize(): Int {
             return oldItem.size
         }
