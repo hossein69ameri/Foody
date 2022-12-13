@@ -3,29 +3,23 @@ package com.example.nourifoodapp1.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foody.models.FoodRecipe
 import com.example.nourifoodapp1.data.model.ResponseFood
 import com.example.nourifoodapp1.data.repository.Repository
 import com.example.nourifoodapp1.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: Repository,application: Application) : AndroidViewModel(application) {
 
-    val recipesResponse = MutableLiveData<ResponseFood>()
-
+    val recipesResponse = MutableLiveData<NetworkResult<ResponseFood>>()
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         repository.getRecepies(queries).collect{
-            recipesResponse.postValue(it.body())
+        recipesResponse.postValue(it)
         }
     }
-
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
 
@@ -38,5 +32,10 @@ class MainViewModel @Inject constructor(private val repository: Repository,appli
 
         return queries
     }
+
+
+
+
+
 
 }

@@ -14,17 +14,16 @@ import com.example.foody.models.Result
 import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.data.model.ResponseFood
 import com.example.nourifoodapp1.databinding.RecipesRowLayoutBinding
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.ViewHolder>() {
 
     private lateinit var binding: RecipesRowLayoutBinding
     private var foodList = emptyList<ResponseFood.Result>()
-    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = RecipesRowLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        context = parent.context
         return ViewHolder()
     }
 
@@ -50,8 +49,8 @@ class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.Vie
                     heartTextView.text = item.aggregateLikes.toString()
                     clockTextView.text = item.readyInMinutes.toString()
                     if (item.vegan == true){
-                    leafImageView.setBackgroundResource(ContextCompat.getColor(context, R.color.green))
-                     leafTextView.setTextColor(ContextCompat.getColor(context,R.color.green))
+                    leafImageView.setBackgroundColor(ContextCompat.getColor(leafImageView.context, R.color.green))
+                     leafTextView.setTextColor(ContextCompat.getColor(leafTextView.context,R.color.green))
                     }
                 root.setOnClickListener {
                     onItemClickListener?.let {

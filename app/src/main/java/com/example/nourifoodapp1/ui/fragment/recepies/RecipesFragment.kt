@@ -13,6 +13,8 @@ import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.FragmentRecipesBinding
 
 import com.example.nourifoodapp1.utils.NetworkResult
+import com.example.nourifoodapp1.utils.isVisibility
+import com.example.nourifoodapp1.utils.setupRecyclerView
 import com.example.nourifoodapp1.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -24,7 +26,7 @@ class RecipesFragment : Fragment() {
     @Inject
     lateinit var foodsAdapter: FoodsAdapter
 
-    private val mainViewModel : MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRecipesBinding.inflate(layoutInflater)
@@ -34,12 +36,29 @@ class RecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-        mainViewModel.getRecipes(mainViewModel.applyQueries())
-            mainViewModel.recipesResponse.observe(viewLifecycleOwner){
-                foodsAdapter.setData(it.results)
-                recyclerMain.apply {
-                    layoutManager = LinearLayoutManager(requireContext())
-                    adapter = foodsAdapter
+            mainViewModel.getRecipes(mainViewModel.applyQueries())
+            mainViewModel.recipesResponse.observe(viewLifecycleOwner) {
+                when (it) {
+                    is NetworkResult.Loading -> {
+                        progressMain.isVisibility(true, recyclerMain)
+                    }
+                    is NetworkResult.Success -> {
+                        progressMain.isVisibility(false, recyclerMain)
+                        if (it.data!!.results != null) {
+                            if (it.data.results!!.isNotEmpty()) {
+                                foodsAdapter.setData(it.data.results)
+                                recyclerMain.setupRecyclerView(
+                                    LinearLayoutManager(requireContext()),
+                                    foodsAdapter
+                                )
+                            }
+                        }
+
+                    }
+                    is NetworkResult.Error -> {
+                        progressMain.isVisibility(false, recyclerMain)
+                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
