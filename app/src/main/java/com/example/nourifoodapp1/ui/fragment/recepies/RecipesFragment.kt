@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.FragmentRecipesBinding
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
     private lateinit var binding: FragmentRecipesBinding
+    private val args by navArgs<RecipesFragmentArgs>()
 
     @Inject
     lateinit var foodsAdapter: FoodsAdapter
@@ -44,7 +46,7 @@ class RecipesFragment : Fragment() {
     private fun readDatabase() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner) { database ->
-                if (database.isNotEmpty()) {
+                if (database.isNotEmpty() && !args.backToBtmSheet) {
                     Log.d("RecipesFragment", "readDatabase called!")
                     foodsAdapter.setData(database[0].foodRecipe.results)
                 } else {

@@ -34,7 +34,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
-    fun getMealAndDiet(): Flow<MealAndDietType> =
+    fun readMealAndDietType(): Flow<MealAndDietType> =
         context.dataStore.data.map {
             val selectedMealType = it[selectedMealType] ?: "main course"
             val selectedMealTypeId = it[selectedMealTypeId] ?: 0

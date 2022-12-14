@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import androidx.lifecycle.*
 import com.example.foody.models.FoodRecipe
 import com.example.nourifoodapp1.data.database.FoodEntity
+import com.example.nourifoodapp1.data.datastore.DataStoreRepository
 import com.example.nourifoodapp1.data.repository.Repository
 import com.example.nourifoodapp1.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: Repository, application: Application) : AndroidViewModel(application) {
+class MainViewModel @Inject constructor(private val repository: Repository, application: Application,private val dataStoreRepository: DataStoreRepository) : AndroidViewModel(application) {
 
     /** Retrofit */
     var recipesResponse = MutableLiveData<NetworkResult<FoodRecipe>>()
@@ -26,17 +27,21 @@ class MainViewModel @Inject constructor(private val repository: Repository, appl
     }
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
-
+        viewModelScope.launch {
+            readMealAndDiet.collect{
+                mealType = it.selectedMealType
+                dietType = it.selectedDietType
+            }
+        }
         queries[QUERY_NUMBER] = "50"
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = "main course"
-        queries[QUERY_DIET] = "gluten free"
+        queries[QUERY_TYPE] = mealType
+        queries[QUERY_DIET] = dietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
 
         return queries
     }
-
 
     /** Room */
     val readRecipes: LiveData<List<FoodEntity>> = repository.readRecipes().asLiveData()
@@ -45,6 +50,13 @@ class MainViewModel @Inject constructor(private val repository: Repository, appl
             repository.insertRecipes(recipesEntity)
         }
 
+    //DataStore
+    private var mealType = "main course"
+    private var dietType = "gluten free"
+    val readMealAndDiet = dataStoreRepository.readMealAndDietType()
+    fun saveMealAndDiet(meal : String,mealId : Int,diet : String , dietId : Int) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveMealAndDiet(meal,mealId,diet,dietId)
+    }
 
 
     private suspend fun getRecipesSafeCall(queries: Map<String, String>) {
