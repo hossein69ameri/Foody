@@ -39,6 +39,7 @@ class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.Vie
                     recipeImageView.load(item.image){
                         crossfade(true)
                         crossfade(500)
+                        error(R.drawable.ic_error_placeholder)
                     }
                     descriptionTextView.text = item.summary
                     heartTextView.text = item.aggregateLikes.toString()

@@ -47,8 +47,6 @@ class MainViewModel @Inject constructor(private val repository: Repository, appl
 
 
 
-
-
     private suspend fun getRecipesSafeCall(queries: Map<String, String>) {
         recipesResponse.value = NetworkResult.Loading()
         if (hasInternetConnection()) {

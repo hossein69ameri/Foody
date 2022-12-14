@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.FragmentRecipesBinding
 import com.example.nourifoodapp1.utils.NetworkResult
 import com.example.nourifoodapp1.utils.observeOnce
@@ -31,13 +33,12 @@ class RecipesFragment : Fragment() {
         binding = FragmentRecipesBinding.inflate(layoutInflater)
         setupRecyclerView()
         readDatabase()
+
+        binding.floatingActionButton.setOnClickListener {
+            findNavController().navigate(R.id.action_RecipesFragment_to_bottomSheetFragment)
+        }
+
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     private fun readDatabase() {
