@@ -1,6 +1,9 @@
 package com.example.nourifoodapp1.utils
 
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -17,4 +20,13 @@ fun View.isVisibility(isShow: Boolean, view: View){
         this.visibility = View.GONE
         view.visibility = View.VISIBLE
     }
+}
+
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            removeObserver(this)
+            observer.onChanged(t)
+        }
+    })
 }

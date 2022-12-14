@@ -1,10 +1,7 @@
 package com.example.nourifoodapp1.ui.fragment.recepies
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -12,15 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.foody.models.Result
 import com.example.nourifoodapp1.R
-import com.example.nourifoodapp1.data.model.ResponseFood
 import com.example.nourifoodapp1.databinding.RecipesRowLayoutBinding
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.ViewHolder>() {
 
     private lateinit var binding: RecipesRowLayoutBinding
-    private var foodList = emptyList<ResponseFood.Result>()
+    private var foodList = emptyList<Result>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = RecipesRowLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,7 +33,7 @@ class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.Vie
 
     inner class ViewHolder : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n", "ResourceType")
-        fun bind(item: ResponseFood.Result) {
+        fun bind(item: Result) {
             binding.apply {
                    titleTextView.text = item.title
                     recipeImageView.load(item.image){
@@ -61,20 +56,20 @@ class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.Vie
         }
     }
 
-    private var onItemClickListener: ((ResponseFood.Result) -> Unit)? = null
+    private var onItemClickListener: ((Result) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (ResponseFood.Result) -> Unit) {
+    fun setOnItemClickListener(listener: (Result) -> Unit) {
         onItemClickListener = listener
     }
 
-    fun setData(data: List<ResponseFood.Result>) {
+    fun setData(data: List<Result>) {
         val moviesDiffUtil = MoviesDiffUtils(foodList, data)
         val diffUtils = DiffUtil.calculateDiff(moviesDiffUtil)
         foodList = data
         diffUtils.dispatchUpdatesTo(this)
     }
 
-    class MoviesDiffUtils(private val oldItem: List<ResponseFood.Result>, private val newItem: List<ResponseFood.Result>) : DiffUtil.Callback() {
+    class MoviesDiffUtils(private val oldItem: List<Result>, private val newItem: List<Result>) : DiffUtil.Callback() {
         override fun getOldListSize(): Int {
             return oldItem.size
         }
