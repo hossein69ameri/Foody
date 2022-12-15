@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.foody.models.FoodRecipe
 import com.example.nourifoodapp1.data.database.FoodEntity
@@ -20,6 +21,25 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: Repository, application: Application,private val dataStoreRepository: DataStoreRepository) : AndroidViewModel(application) {
 
+    //check interntet
+    var networkStatus = false
+    fun netWorkConnection(){
+        if (!networkStatus){
+            Toast.makeText(getApplication(),"No Internet Connection",Toast.LENGTH_SHORT).show()
+            saveBackOnline(true)
+
+        }else if (networkStatus){
+            if (backOnline){
+                Toast.makeText(getApplication(),"Internet In On",Toast.LENGTH_SHORT).show()
+                saveBackOnline(false)
+            }
+        }
+    }
+    var backOnline = false
+    val readBackOnline = dataStoreRepository.readBackOnline.asLiveData()
+    fun saveBackOnline(backOnline : Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveBackOnline(backOnline)
+    }
     /** Retrofit */
     var recipesResponse = MutableLiveData<NetworkResult<FoodRecipe>>()
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {

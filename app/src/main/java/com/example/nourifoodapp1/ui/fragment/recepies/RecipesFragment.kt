@@ -14,17 +14,22 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.FragmentRecipesBinding
+import com.example.nourifoodapp1.utils.NetworkListener
 import com.example.nourifoodapp1.utils.NetworkResult
 import com.example.nourifoodapp1.utils.observeOnce
 import com.example.nourifoodapp1.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
     private lateinit var binding: FragmentRecipesBinding
     private val args by navArgs<RecipesFragmentArgs>()
+    private lateinit var networkListener: NetworkListener
 
     @Inject
     lateinit var foodsAdapter: FoodsAdapter
@@ -34,10 +39,29 @@ class RecipesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRecipesBinding.inflate(layoutInflater)
         setupRecyclerView()
-        readDatabase()
+
+
+        //Check Internet Connection
+        lifecycleScope.launch {
+            networkListener = NetworkListener()
+            networkListener.checkNetworkAvailability(requireContext()).collect{
+            mainViewModel.networkStatus = it
+                mainViewModel.netWorkConnection()
+                readDatabase()
+            }
+        }
+        //check backOnline
+        mainViewModel.readBackOnline.observe(viewLifecycleOwner){
+            mainViewModel.backOnline = it
+        }
 
         binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_RecipesFragment_to_bottomSheetFragment)
+            if (mainViewModel.networkStatus){
+                findNavController().navigate(R.id.action_RecipesFragment_to_bottomSheetFragment)
+            }else{
+                mainViewModel.netWorkConnection()
+            }
+
         }
 
         return binding.root

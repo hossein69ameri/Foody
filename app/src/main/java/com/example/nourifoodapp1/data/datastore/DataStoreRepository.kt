@@ -2,10 +2,7 @@ package com.example.nourifoodapp1.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -22,6 +19,17 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         val selectedMealTypeId = intPreferencesKey("mealTypeId")
         val selectedDietType = stringPreferencesKey("dietType")
         val selectedDietTypeId = intPreferencesKey("dietTypeId")
+        val backInline = booleanPreferencesKey("backOnline")
+    }
+
+    suspend fun saveBackOnline(backOnline : Boolean){
+        context.dataStore.edit {
+            it[backInline] = backOnline
+        }
+    }
+    val readBackOnline : Flow<Boolean> = context.dataStore.data.map {
+        val backOnline = it[backInline] ?: false
+        backOnline
     }
 
     suspend fun saveMealAndDiet(mealType: String, mealTypeId: Int, dietType: String, dietTypeId: Int) {
