@@ -2,11 +2,10 @@ package com.example.nourifoodapp1.ui.fragment.recepies
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +16,7 @@ import com.example.nourifoodapp1.databinding.FragmentRecipesBinding
 import com.example.nourifoodapp1.utils.NetworkListener
 import com.example.nourifoodapp1.utils.NetworkResult
 import com.example.nourifoodapp1.utils.observeOnce
+import com.example.nourifoodapp1.utils.setupRecyclerView
 import com.example.nourifoodapp1.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class RecipesFragment : Fragment() {
+class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     private lateinit var binding: FragmentRecipesBinding
     private val args by navArgs<RecipesFragmentArgs>()
     private lateinit var networkListener: NetworkListener
@@ -38,9 +38,10 @@ class RecipesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRecipesBinding.inflate(layoutInflater)
-        setupRecyclerView()
 
 
+        setHasOptionsMenu(true)
+//        setupRecyclerView()
         //Check Internet Connection
         lifecycleScope.launch {
             networkListener = NetworkListener()
@@ -50,11 +51,11 @@ class RecipesFragment : Fragment() {
                 readDatabase()
             }
         }
-        //check backOnline
-        mainViewModel.readBackOnline.observe(viewLifecycleOwner){
-            mainViewModel.backOnline = it
-        }
 
+        //check backOnline
+        mainViewModel.readBackOnline.observe(viewLifecycleOwner){ mainViewModel.backOnline = it }
+
+        //click in fab
         binding.floatingActionButton.setOnClickListener {
             if (mainViewModel.networkStatus){
                 findNavController().navigate(R.id.action_RecipesFragment_to_bottomSheetFragment)
@@ -64,25 +65,78 @@ class RecipesFragment : Fragment() {
 
         }
 
+        //click in adapter
+        foodsAdapter.setOnItemClickListener {
+        val direction = RecipesFragmentDirections.actionRecipesFragmentToDetailActivity(it)
+            findNavController().navigate(direction)
+        }
+
         return binding.root
     }
 
+    //search
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.recepie_menu,menu)
+        val search = menu.findItem(R.id.search_menu)
+        val searchView = search.actionView as SearchView
+        searchView.isSubmitButtonEnabled = true
+        searchView.setOnQueryTextListener(this)
+    }
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query !=null) {
+            searchData(query)
+        }
+        return true
+    }
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return true
+    }
+
+    //search
+    private fun searchData(query: String){
+        mainViewModel.searchResepies(mainViewModel.applySearchQueries(query))
+        mainViewModel.searchData.observe(viewLifecycleOwner){ response ->
+            when(response){
+                is NetworkResult.Success -> {
+                    val foodRecipe = response.data
+                    foodRecipe?.let { foodsAdapter.setData(it.results) }
+                    binding.recyclerMain.setupRecyclerView(LinearLayoutManager(requireContext()),foodsAdapter)
+                }
+                is NetworkResult.Error -> {
+                    loadDataFromCache()
+                    Toast.makeText(
+                        requireContext(),
+                        response.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is NetworkResult.Loading -> {
+                }
+            }
+        }
+    }
+    //read data from database
     private fun readDatabase() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner) { database ->
                 if (database.isNotEmpty() && !args.backToBtmSheet) {
                     Log.d("RecipesFragment", "readDatabase called!")
                     foodsAdapter.setData(database[0].foodRecipe.results)
+                    binding.recyclerMain.setupRecyclerView(LinearLayoutManager(requireContext()),foodsAdapter)
                 } else {
                     requestApiData()
                 }
             }
         }
     }
-    private fun setupRecyclerView() {
-        binding.recyclerMain.adapter = foodsAdapter
-        binding.recyclerMain.layoutManager = LinearLayoutManager(requireContext())
-    }
+
+    //init recycler view
+//    private fun setupRecyclerView() {
+//        binding.recyclerMain.adapter = foodsAdapter
+//        binding.recyclerMain.layoutManager = LinearLayoutManager(requireContext())
+//    }
+
+    //read data from api
     private fun requestApiData() {
         Log.d("RecipesFragment", "requestApiData called!")
         mainViewModel.getRecipes(mainViewModel.applyQueries())
@@ -90,6 +144,7 @@ class RecipesFragment : Fragment() {
             when (response) {
                 is NetworkResult.Success -> {
                     response.data?.let { foodsAdapter.setData(it.results) }
+                    binding.recyclerMain.setupRecyclerView(LinearLayoutManager(requireContext()),foodsAdapter)
                 }
                 is NetworkResult.Error -> {
                     loadDataFromCache()
@@ -105,13 +160,17 @@ class RecipesFragment : Fragment() {
             }
         }
     }
+
+
     private fun loadDataFromCache() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observe(viewLifecycleOwner) { database ->
                 if (database.isNotEmpty()) {
                     foodsAdapter.setData(database[0].foodRecipe.results)
+                    binding.recyclerMain.setupRecyclerView(LinearLayoutManager(requireContext()),foodsAdapter)
                 }
             }
         }
     }
+
 }

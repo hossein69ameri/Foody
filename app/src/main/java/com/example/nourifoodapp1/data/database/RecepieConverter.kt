@@ -20,6 +20,4 @@ class RecepieConverter {
         val listType = object : TypeToken<FoodRecipe>() {}.type
         return gson.fromJson(data, listType)
     }
-
-
 }

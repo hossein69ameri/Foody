@@ -12,5 +12,6 @@ const val QUERY_DIET = "diet"
 const val QUERY_ADD_RECIPE_INFORMATION = "addRecipeInformation"
 const val QUERY_FILL_INGREDIENTS = "fillIngredients"
 
+//database
 const val TABLE_NAME = "table_name"
 const val DB_NAME = "db_name"

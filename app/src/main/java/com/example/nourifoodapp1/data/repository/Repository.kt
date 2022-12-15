@@ -12,14 +12,11 @@ import javax.inject.Inject
 
 class Repository @Inject constructor(private val foodRecepieApi: FoodRecepieApi, private val foodDao: FoodDao) {
 
-    /** Retrofit */
+    //retrofit
     suspend fun getRecepies(queries: Map<String, String>) = foodRecepieApi.getRecepies(queries)
+    suspend fun searchRecepie(searchRecepi: Map<String, String>) = foodRecepieApi.searchRecepie(searchRecepi)
 
-    /** Room */
-    fun readRecipes(): Flow<List<FoodEntity>> {
-        return foodDao.readRecepies()
-    }
-    suspend fun insertRecipes(recipesEntity: FoodEntity) {
-        foodDao.insertFoodRecepi(recipesEntity)
-    }
+    //database
+    fun readRecipes(): Flow<List<FoodEntity>> { return foodDao.readRecepies() }
+    suspend fun insertRecipes(recipesEntity: FoodEntity) = foodDao.insertFoodRecepi(recipesEntity)
 }

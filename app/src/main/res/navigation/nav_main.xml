@@ -17,6 +17,9 @@
             android:name="backToBtmSheet"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_RecipesFragment_to_detailActivity"
+            app:destination="@id/detailActivity" />
     </fragment>
     <fragment
         android:id="@+id/FavoriteRecipesFragment"
@@ -38,4 +41,13 @@
             android:id="@+id/action_bottomSheetFragment_to_RecipesFragment"
             app:destination="@id/RecipesFragment" />
     </dialog>
+    <activity
+        android:id="@+id/detailActivity"
+        android:name="com.example.nourifoodapp1.ui.DetailActivity"
+        android:label="activity_detail"
+        tools:layout="@layout/activity_detail" >
+        <argument
+            android:name="result"
+            app:argType="com.example.foody.models.Result" />
+    </activity>
 </navigation>

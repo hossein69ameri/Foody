@@ -40,7 +40,10 @@ class MainViewModel @Inject constructor(private val repository: Repository, appl
     fun saveBackOnline(backOnline : Boolean) = viewModelScope.launch(Dispatchers.IO) {
         dataStoreRepository.saveBackOnline(backOnline)
     }
-    /** Retrofit */
+
+    //retrofit
+
+        //get list
     var recipesResponse = MutableLiveData<NetworkResult<FoodRecipe>>()
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         getRecipesSafeCall(queries)
@@ -63,7 +66,36 @@ class MainViewModel @Inject constructor(private val repository: Repository, appl
         return queries
     }
 
-    /** Room */
+        //search list
+    var searchData = MutableLiveData<NetworkResult<FoodRecipe>>()
+    fun searchResepies(searchResepi: Map<String, String>) = viewModelScope.launch { searchRecepiSafeCall(searchResepi) }
+    private suspend fun searchRecepiSafeCall(searchResepi: Map<String, String>) {
+        searchData.value = NetworkResult.Loading()
+        if (hasInternetConnection()) {
+            try {
+                val response = repository.searchRecepie(searchResepi)
+                searchData.value = handleFoodRecipesResponse(response)
+            } catch (e: Exception) {
+                searchData.value = NetworkResult.Error("Recipes not found.")
+            }
+        } else {
+            searchData.value = NetworkResult.Error("No Internet Connection.")
+        }
+    }
+    fun applySearchQueries(query : String): HashMap<String, String> {
+        val searchQueries: HashMap<String, String> = HashMap()
+
+        searchQueries["query"] = query
+        searchQueries[QUERY_NUMBER] = "50"
+        searchQueries[QUERY_API_KEY] = API_KEY
+        searchQueries[QUERY_ADD_RECIPE_INFORMATION] = "true"
+        searchQueries[QUERY_FILL_INGREDIENTS] = "true"
+
+        return searchQueries
+    }
+
+
+    //database
     val readRecipes: LiveData<List<FoodEntity>> = repository.readRecipes().asLiveData()
     private fun insertRecipes(recipesEntity: FoodEntity) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -74,11 +106,10 @@ class MainViewModel @Inject constructor(private val repository: Repository, appl
     private var mealType = "main course"
     private var dietType = "gluten free"
     val readMealAndDiet = dataStoreRepository.readMealAndDietType()
-    fun saveMealAndDiet(meal : String,mealId : Int,diet : String , dietId : Int) = viewModelScope.launch(Dispatchers.IO) {
-        dataStoreRepository.saveMealAndDiet(meal,mealId,diet,dietId)
-    }
+    fun saveMealAndDiet(meal : String,mealId : Int,diet : String , dietId : Int) = viewModelScope.launch(Dispatchers.IO) { dataStoreRepository.saveMealAndDiet(meal,mealId,diet,dietId) }
 
 
+    //other method
     private suspend fun getRecipesSafeCall(queries: Map<String, String>) {
         recipesResponse.value = NetworkResult.Loading()
         if (hasInternetConnection()) {

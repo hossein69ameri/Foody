@@ -21,17 +21,17 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         val selectedDietTypeId = intPreferencesKey("dietTypeId")
         val backInline = booleanPreferencesKey("backOnline")
     }
-
+    //save State Internet
     suspend fun saveBackOnline(backOnline : Boolean){
-        context.dataStore.edit {
-            it[backInline] = backOnline
-        }
+        context.dataStore.edit { it[backInline] = backOnline }
     }
+    //read State Internet
     val readBackOnline : Flow<Boolean> = context.dataStore.data.map {
         val backOnline = it[backInline] ?: false
         backOnline
     }
 
+    //save Chip in Method
     suspend fun saveMealAndDiet(mealType: String, mealTypeId: Int, dietType: String, dietTypeId: Int) {
         context.dataStore.edit {
             it[selectedMealType] = mealType
@@ -42,6 +42,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
+    //read Chip in Method
     fun readMealAndDietType(): Flow<MealAndDietType> =
         context.dataStore.data.map {
             val selectedMealType = it[selectedMealType] ?: "main course"
@@ -52,6 +53,9 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
 
 
-    data class MealAndDietType(val selectedMealType: String, val selectedMealTypeId: Int, val selectedDietType: String, val selectedDietTypeId: Int)
+    data class MealAndDietType(val selectedMealType: String,
+                               val selectedMealTypeId: Int,
+                               val selectedDietType: String,
+                               val selectedDietTypeId: Int)
 
 }
