@@ -10,6 +10,7 @@ import coil.load
 import com.example.foody.models.Result
 import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.RecipesRowLayoutBinding
+import org.jsoup.Jsoup
 import javax.inject.Inject
 
 class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.ViewHolder>() {
@@ -41,7 +42,8 @@ class FoodsAdapter @Inject constructor() : RecyclerView.Adapter<FoodsAdapter.Vie
                         crossfade(500)
                         error(R.drawable.ic_error_placeholder)
                     }
-                    descriptionTextView.text = item.summary
+                    val dec = Jsoup.parse(item.summary).text()
+                    descriptionTextView.text = dec
                     heartTextView.text = item.aggregateLikes.toString()
                     clockTextView.text = item.readyInMinutes.toString()
                     if (item.vegan == true){
