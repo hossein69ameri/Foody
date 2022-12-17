@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.activity.detail.viewpager.IngredientFragment">
+    tools:context=".ui.activity.detail.viewpager.ingredient.IngredientFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredients_recyclerview"

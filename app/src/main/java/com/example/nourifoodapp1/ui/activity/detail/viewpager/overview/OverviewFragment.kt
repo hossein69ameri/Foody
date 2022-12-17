@@ -1,4 +1,4 @@
-package com.example.nourifoodapp1.ui.activity.detail.viewpager
+package com.example.nourifoodapp1.ui.activity.detail.viewpager.overview
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

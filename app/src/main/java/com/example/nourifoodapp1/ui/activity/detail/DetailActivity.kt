@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.navArgs
 import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.ActivityDetailBinding
-import com.example.nourifoodapp1.ui.activity.detail.viewpager.IngredientFragment
-import com.example.nourifoodapp1.ui.activity.detail.viewpager.InstructionsFragment
-import com.example.nourifoodapp1.ui.activity.detail.viewpager.OverviewFragment
+import com.example.nourifoodapp1.ui.activity.detail.viewpager.ingredient.IngredientFragment
+import com.example.nourifoodapp1.ui.activity.detail.viewpager.instruction.InstructionsFragment
+import com.example.nourifoodapp1.ui.activity.detail.viewpager.overview.OverviewFragment
 import com.example.nourifoodapp1.ui.activity.detail.viewpager.PagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
