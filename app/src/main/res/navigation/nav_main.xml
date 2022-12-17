@@ -43,7 +43,7 @@
     </dialog>
     <activity
         android:id="@+id/detailActivity"
-        android:name="com.example.nourifoodapp1.ui.DetailActivity"
+        android:name="com.example.nourifoodapp1.ui.activity.detail.DetailActivity"
         android:label="activity_detail"
         tools:layout="@layout/activity_detail" >
         <argument

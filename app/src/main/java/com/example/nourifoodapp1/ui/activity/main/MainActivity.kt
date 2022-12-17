@@ -1,4 +1,4 @@
-package com.example.nourifoodapp1.ui
+package com.example.nourifoodapp1.ui.activity.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
