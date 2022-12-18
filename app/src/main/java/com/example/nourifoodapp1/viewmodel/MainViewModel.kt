@@ -7,7 +7,7 @@ import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.foody.models.FoodRecipe
-import com.example.nourifoodapp1.data.database.FoodEntity
+import com.example.nourifoodapp1.data.database.entity.FoodEntity
 import com.example.nourifoodapp1.data.datastore.DataStoreRepository
 import com.example.nourifoodapp1.data.repository.Repository
 import com.example.nourifoodapp1.utils.*

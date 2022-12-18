@@ -15,4 +15,5 @@ const val QUERY_FILL_INGREDIENTS = "fillIngredients"
 
 //database
 const val TABLE_NAME = "table_name"
+const val TABLE_NAME_FAVORITE = "table_name_favorite"
 const val DB_NAME = "db_name"
