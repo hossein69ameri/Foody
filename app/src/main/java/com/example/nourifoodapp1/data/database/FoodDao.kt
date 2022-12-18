@@ -3,6 +3,7 @@ package com.example.nourifoodapp1.data.database
 import androidx.room.*
 import com.example.nourifoodapp1.data.database.entity.FavoriteEntity
 import com.example.nourifoodapp1.data.database.entity.FoodEntity
+import com.example.nourifoodapp1.data.database.entity.FoodJokeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -28,4 +29,12 @@ interface FoodDao {
 
     @Query("SELECT * FROM TABLE_NAME_FAVORITE ORDER BY id ASC")
     fun readFavoriteResult(): Flow<List<FavoriteEntity>>
+
+
+    //dao for foodJoke
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun inserFoodJoke(foodJokeEntity: FoodJokeEntity)
+
+    @Query("SELECT * FROM table_foodJoke ORDER BY id ASC")
+    fun readFoodjoke(): Flow<List<FoodJokeEntity>>
 }
