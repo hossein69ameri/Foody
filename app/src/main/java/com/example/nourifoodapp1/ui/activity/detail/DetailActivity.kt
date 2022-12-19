@@ -17,12 +17,13 @@ import com.example.nourifoodapp1.ui.activity.detail.viewpager.overview.OverviewF
 import com.example.nourifoodapp1.ui.activity.detail.viewpager.PagerAdapter
 import com.example.nourifoodapp1.viewmodel.FavoriteViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private var _binding: ActivityDetailBinding? = null
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
     private val args : DetailActivityArgs by navArgs()
     private val favoriteViewModel : FavoriteViewModel by viewModels()
@@ -32,11 +33,11 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
 
-        setSupportActionBar(binding!!.toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
-        binding!!.toolbar.setTitleTextColor(ContextCompat.getColor(this@DetailActivity,R.color.white))
+        binding.toolbar.setTitleTextColor(ContextCompat.getColor(this@DetailActivity,R.color.white))
 
         //add fragment
         val fragments = ArrayList<Fragment>()
@@ -52,12 +53,13 @@ class DetailActivity : AppCompatActivity() {
         val bundle = Bundle()
         bundle.putParcelable("recipeBundle",args.result)
         //adapter and tabLayout
-        val adapter = PagerAdapter(bundle,fragments,titles,supportFragmentManager)
-        binding?.apply {
-            viewPager.adapter = adapter
-            tabLayout.setupWithViewPager(viewPager)
+        val pagerAdapter = PagerAdapter(bundle,fragments,this)
+        binding.viewPager2.apply {
+            adapter = pagerAdapter
         }
-
+        TabLayoutMediator(binding.tabLayout,binding.viewPager2){ tab , position ->
+            tab.text = titles[position]
+        }.attach()
 
 
     }

@@ -27,7 +27,7 @@ class FoodJokeFragment : Fragment() {
     private val binding get() = _binding!!
     private var foodJoke = "Empty"
 
-    private val foodJokeViewModel : FoodJokeViewModel by viewModels()
+    private val foodJokeViewModel: FoodJokeViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFoodjokeBinding.inflate(layoutInflater)
@@ -36,13 +36,13 @@ class FoodJokeFragment : Fragment() {
 
         //get data from api or cache
         foodJokeViewModel.getFoodJoke(API_KEY)
-        foodJokeViewModel.foodJokeResponse.observe(viewLifecycleOwner){ response ->
+        foodJokeViewModel.foodJokeResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
                     binding.apply {
-                        progressBar.isVisibility(false,foodJokeCardView)
+                        progressBar.isVisibility(false, foodJokeCardView)
                     }
-                    Log.e("TAG", "onViewCreated: ${response.data!!.text}", )
+                    Log.e("TAG", "onViewCreated: ${response.data!!.text}")
                     binding.foodJokeTextView.text = response.data.text
                     foodJoke = response.data.text
                 }
@@ -54,12 +54,12 @@ class FoodJokeFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     binding.apply {
-                        progressBar.isVisibility(false,foodJokeCardView)
+                        progressBar.isVisibility(false, foodJokeCardView)
                     }
                 }
                 is NetworkResult.Loading -> {
                     binding.apply {
-                        progressBar.isVisibility(true,foodJokeCardView)
+                        progressBar.isVisibility(true, foodJokeCardView)
                     }
                 }
             }
@@ -69,30 +69,46 @@ class FoodJokeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.food_joke_menu,menu)
+        inflater.inflate(R.menu.food_joke_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.share_food_joke_menu){
-        val shareIntent = Intent().apply {
-            this.action = Intent.ACTION_SEND
-            this.putExtra(Intent.EXTRA_TEXT,foodJoke)
-            this.type = "text/plain"
-        }
+        if (item.itemId == R.id.share_food_joke_menu) {
+            val shareIntent = Intent().apply {
+                this.action = Intent.ACTION_SEND
+                this.putExtra(Intent.EXTRA_TEXT, foodJoke)
+                this.type = "text/plain"
+            }
             startActivity(shareIntent)
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun loadDataFromCache() {
-        lifecycleScope.launch{
-            foodJokeViewModel.readFoodJoke.observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
+        lifecycleScope.launch {
+            foodJokeViewModel.readFoodJoke.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty() && it != null) {
                     binding.apply {
-                        progressBar.isVisibility(false,foodJokeCardView)
+                        progressBar.isVisibility(false, foodJokeCardView)
                     }
                     binding.foodJokeTextView.text = it[0].foodJoke.text
                     foodJoke = it[0].foodJoke.text
+                } else {
+                    foodJokeViewModel.isShow.observe(viewLifecycleOwner) {
+                        if (it) {
+                            binding.apply {
+                                foodJokeErrorImageView.visibility = View.VISIBLE
+                                foodJokeErrorTextView.visibility = View.VISIBLE
+                                foodJokeCardView.visibility = View.GONE
+                            }
+                        } else {
+                            binding.apply {
+                                foodJokeErrorImageView.visibility = View.GONE
+                                foodJokeErrorTextView.visibility = View.GONE
+                                foodJokeCardView.visibility = View.VISIBLE
+                            }
+                        }
+                    }
                 }
             }
         }

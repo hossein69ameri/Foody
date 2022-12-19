@@ -20,6 +20,7 @@ class FoodJokeViewModel @Inject constructor(private val repository: Repository,a
 
     val foodJokeResponse = MutableLiveData<NetworkResult<FoodJoke>> ()
     val readFoodJoke: LiveData<List<FoodJokeEntity>> = repository.readFoodJoke().asLiveData()
+    val isShow = MutableLiveData<Boolean>()
 
     fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) = viewModelScope.launch {
         repository.inserFoodJoke(foodJokeEntity)
@@ -32,6 +33,7 @@ class FoodJokeViewModel @Inject constructor(private val repository: Repository,a
     private suspend fun getFoodJokeSafeCall(apiKey: String) {
         foodJokeResponse.value = NetworkResult.Loading()
         if (hasInternetConnection()) {
+                isShow.postValue(false)
                 val response = repository.getFoodJoke(apiKey)
                 foodJokeResponse.value = handleFoodJokeResponse(response)
 
@@ -40,6 +42,7 @@ class FoodJokeViewModel @Inject constructor(private val repository: Repository,a
                     offlineCacheFoodJoke(foodJoke)
                 }
         } else {
+            isShow.postValue(true)
             foodJokeResponse.value = NetworkResult.Error("No Internet Connection.")
         }
     }
