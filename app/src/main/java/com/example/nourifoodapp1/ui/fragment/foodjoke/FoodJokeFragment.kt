@@ -23,13 +23,14 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FoodJokeFragment : Fragment() {
-    private lateinit var binding: FragmentFoodjokeBinding
+    private var _binding: FragmentFoodjokeBinding? = null
+    private val binding get() = _binding!!
     private var foodJoke = "Empty"
 
     private val foodJokeViewModel : FoodJokeViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentFoodjokeBinding.inflate(layoutInflater)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentFoodjokeBinding.inflate(layoutInflater)
 
         setHasOptionsMenu(true)
 
@@ -42,7 +43,7 @@ class FoodJokeFragment : Fragment() {
                         progressBar.isVisibility(false,foodJokeCardView)
                     }
                     Log.e("TAG", "onViewCreated: ${response.data!!.text}", )
-                    binding.foodJokeTextView.text = response.data?.text
+                    binding.foodJokeTextView.text = response.data.text
                     foodJoke = response.data.text
                 }
                 is NetworkResult.Error -> {
@@ -95,5 +96,10 @@ class FoodJokeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

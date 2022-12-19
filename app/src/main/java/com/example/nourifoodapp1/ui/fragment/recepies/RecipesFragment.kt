@@ -27,7 +27,9 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
-    private lateinit var binding: FragmentRecipesBinding
+    private var _binding: FragmentRecipesBinding? = null
+    private val binding get() = _binding!!
+
     private val args by navArgs<RecipesFragmentArgs>()
     private lateinit var networkListener: NetworkListener
 
@@ -36,14 +38,14 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val mainViewModel: MainViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentRecipesBinding.inflate(layoutInflater)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentRecipesBinding.inflate(layoutInflater)
 
 
         setHasOptionsMenu(true)
 //        setupRecyclerView()
         //Check Internet Connection
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             networkListener = NetworkListener()
             networkListener.checkNetworkAvailability(requireContext()).collect{
             mainViewModel.networkStatus = it
@@ -171,6 +173,11 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

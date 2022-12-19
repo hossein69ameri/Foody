@@ -16,29 +16,31 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
-    private lateinit var binding: FragmentFavoriteBinding
+    private var _binding: FragmentFavoriteBinding? = null
+    private val binding get() = _binding
+
 
     @Inject
     lateinit var favoriteAdapter: FavoriteAdapter
 
     private val favoriteViewModel : FavoriteViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentFavoriteBinding.inflate(layoutInflater)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentFavoriteBinding.inflate(layoutInflater)
 
         setHasOptionsMenu(true)
         //get favorite list
         favoriteViewModel.readFavoriteRecipeData.observe(viewLifecycleOwner){
             if (it.isNotEmpty()){
-                binding.apply {
+                binding?.apply {
                     noDataImageView.visibility = View.GONE
                     noDataTextView.visibility = View.GONE
                     favoriteRecipesRecyclerView.visibility = View.VISIBLE
                 }
                 favoriteAdapter.setData(it)
-                binding.favoriteRecipesRecyclerView.setupRecyclerView(LinearLayoutManager(requireContext()),favoriteAdapter)
+                binding?.favoriteRecipesRecyclerView?.setupRecyclerView(LinearLayoutManager(requireContext()),favoriteAdapter)
             }else {
-                binding.apply {
+                binding?.apply {
                     noDataImageView.visibility = View.VISIBLE
                     noDataTextView.visibility = View.VISIBLE
                     favoriteRecipesRecyclerView.visibility = View.GONE
@@ -53,19 +55,24 @@ class FavoriteFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        return binding.root
+        return binding!!.root
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.deleteAll_favorite_recipes_menu){
             favoriteViewModel.deleteAllFavoriteRecipe()
-            Snackbar.make(binding.root,"Delete All", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding!!.root,"Delete All", Snackbar.LENGTH_SHORT).show()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_recipes_menu,menu)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

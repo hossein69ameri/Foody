@@ -21,7 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDetailBinding
+    private var _binding: ActivityDetailBinding? = null
+    private val binding get() = _binding
+
     private val args : DetailActivityArgs by navArgs()
     private val favoriteViewModel : FavoriteViewModel by viewModels()
     private var saveRecipe = false
@@ -29,12 +31,12 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
 
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding!!.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
-        binding.toolbar.setTitleTextColor(ContextCompat.getColor(this@DetailActivity,R.color.white))
+        binding!!.toolbar.setTitleTextColor(ContextCompat.getColor(this@DetailActivity,R.color.white))
 
         //add fragment
         val fragments = ArrayList<Fragment>()
@@ -51,7 +53,7 @@ class DetailActivity : AppCompatActivity() {
         bundle.putParcelable("recipeBundle",args.result)
         //adapter and tabLayout
         val adapter = PagerAdapter(bundle,fragments,titles,supportFragmentManager)
-        binding.apply {
+        binding?.apply {
             viewPager.adapter = adapter
             tabLayout.setupWithViewPager(viewPager)
         }
@@ -110,11 +112,16 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun snackBarShow(s: String) {
-        Snackbar.make(this,binding.root,s,Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(this,binding!!.root,s,Snackbar.LENGTH_SHORT).show()
     }
 
 
     private fun changeFavoriteColor(item: MenuItem, yellow: Int) {
         item.icon!!.setTint(ContextCompat.getColor(this,yellow))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
