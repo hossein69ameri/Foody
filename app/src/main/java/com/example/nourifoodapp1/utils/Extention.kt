@@ -1,7 +1,9 @@
 package com.example.nourifoodapp1.utils
 
+import android.content.Context
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -36,11 +38,8 @@ fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observ
     })
 }
 
-fun setErrorViewsVisibility(
-    view: View,
-    apiResponse: NetworkResult<FoodJoke>?,
-    database: List<FoodJokeEntity>?
-){
+//setError
+fun setErrorViewsVisibility(view: View, apiResponse: NetworkResult<FoodJoke>?, database: List<FoodJokeEntity>?){
     if(database != null){
         if(database.isEmpty()){
             view.visibility = View.VISIBLE
@@ -55,3 +54,6 @@ fun setErrorViewsVisibility(
         view.visibility = View.INVISIBLE
     }
 }
+
+//contextCompat
+fun Context.setupColor(id : Int) = ContextCompat.getColor(this,id)

@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding
+    private val binding get() = _binding!!
     private lateinit var navController: NavController
 
 
@@ -22,13 +22,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setTheme(R.style.AppTheme)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
         //init navHost
         navController = findNavController(R.id.navHost)
         //set title to app bar
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.RecipesFragment, R.id.FavoriteRecipesFragment, R.id.FoodJokeFragment))
         //set bottom nav
-        binding?.bottomNav?.setupWithNavController(navController)
+        binding.bottomNav.setupWithNavController(navController)
         //set action bar
         setupActionBarWithNavController(navController, appBarConfiguration)
 

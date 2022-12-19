@@ -132,12 +132,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    //init recycler view
-//    private fun setupRecyclerView() {
-//        binding.recyclerMain.adapter = foodsAdapter
-//        binding.recyclerMain.layoutManager = LinearLayoutManager(requireContext())
-//    }
-
     //read data from api
     private fun requestApiData() {
         Log.d("RecipesFragment", "requestApiData called!")

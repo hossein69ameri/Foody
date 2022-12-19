@@ -15,62 +15,57 @@ import org.jsoup.Jsoup
 
 @AndroidEntryPoint
 class OverviewFragment : Fragment() {
-private lateinit var binding: FragmentOverviewBinding
+    private var _binding: FragmentOverviewBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentOverviewBinding.inflate(layoutInflater)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentOverviewBinding.inflate(layoutInflater)
 
         //get bundle
         val args = arguments
-        val bundle : Result? = args?.getParcelable("recipeBundle")
+        val bundle: Result? = args?.getParcelable("recipeBundle")
 
         binding.apply {
+            //html parser
+            val desc = bundle?.summary?.let { Jsoup.parse(it).text() }
+            summaryTextView.text = desc
+
             //set data
             mainImageView.load(bundle?.image)
             titleTextView.text = bundle?.title
             likesTextView.text = bundle?.aggregateLikes.toString()
             timeTextView.text = bundle?.readyInMinutes.toString()
-            //html parser
-            val desc = bundle?.summary?.let { Jsoup.parse(it).text() }
-            summaryTextView.text = desc
+            if (bundle?.vegetarian == true) {
+                vegetarianImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                vegetarianTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
 
-            if(bundle?.vegetarian == true){
-               vegetarianImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-                vegetarianTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-            }
-
-            if(bundle?.vegan == true){
+            if (bundle?.vegan == true) {
                 veganImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-                veganTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-            }
+                veganTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
 
-            if(bundle?.glutenFree == true){
-               glutenFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-               glutenFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-            }
+            if (bundle?.glutenFree == true) {
+                glutenFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                glutenFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
 
-            if(bundle?.dairyFree == true){
-               dairyFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-               dairyFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-            }
+            if (bundle?.dairyFree == true) {
+                dairyFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                dairyFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
 
-            if(bundle?.veryHealthy == true){
-               healthyImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-              healthyTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-            }
+            if (bundle?.veryHealthy == true) {
+                healthyImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                healthyTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
 
-            if(bundle?.cheap == true){
-               cheapImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-                cheapTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-            }
+            if (bundle?.cheap == true) {
+                cheapImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                cheapTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
 
         }
 
-
-
-
-
-
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

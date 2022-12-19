@@ -35,6 +35,7 @@ class DetailActivity : AppCompatActivity() {
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setTitleTextColor(ContextCompat.getColor(this@DetailActivity,R.color.white))
@@ -54,13 +55,8 @@ class DetailActivity : AppCompatActivity() {
         bundle.putParcelable("recipeBundle",args.result)
         //adapter and tabLayout
         val pagerAdapter = PagerAdapter(bundle,fragments,this)
-        binding.viewPager2.apply {
-            adapter = pagerAdapter
-        }
-        TabLayoutMediator(binding.tabLayout,binding.viewPager2){ tab , position ->
-            tab.text = titles[position]
-        }.attach()
-
+        binding.viewPager2.apply { adapter = pagerAdapter }
+        TabLayoutMediator(binding.tabLayout,binding.viewPager2){ tab , position -> tab.text = titles[position] }.attach()
 
     }
 
@@ -114,7 +110,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun snackBarShow(s: String) {
-        Snackbar.make(this,binding!!.root,s,Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(this,binding.root,s,Snackbar.LENGTH_SHORT).show()
     }
 
 

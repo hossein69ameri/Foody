@@ -18,11 +18,7 @@ import javax.inject.Inject
 class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding
-
-
-    @Inject
-    lateinit var favoriteAdapter: FavoriteAdapter
-
+    @Inject lateinit var favoriteAdapter: FavoriteAdapter
     private val favoriteViewModel : FavoriteViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
