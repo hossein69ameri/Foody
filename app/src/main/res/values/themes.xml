@@ -1,18 +1,14 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Theme.NouriFoodApp1" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="actionModeBackground">@color/contextualActionBarColor</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
+        <item name="actionBarStyle">@style/CustomActionBarStyle</item>
+        <item name="bottomNavigationStyle">@style/CustomBottomNavigationViewStyle</item>
     </style>
 
     <style name="SplashScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -21,10 +17,8 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="TopRoundedImageView">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">10dp</item>
-        <item name="cornerSizeTopRight">10dp</item>
+    <style name="CustomActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="background">@color/actionBarBackgroundColor</item>
     </style>
 
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
@@ -38,7 +32,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
     </style>
 
     <style name="CustomTabLayoutStyle" parent="Widget.Design.TabLayout">
@@ -52,5 +46,10 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="CustomBottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="backgroundTint">@color/bottomNavBackground</item>
+        <item name="itemIconTint">@color/bottom_nav_view_item_color</item>
+        <item name="itemTextColor">@color/bottom_nav_view_item_color</item>
+    </style>
 
 </resources>

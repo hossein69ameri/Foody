@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_food_joke_background"
+    android:background="@drawable/ic_food_joke_background_dark"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -24,8 +24,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/cardBackgroundColor">
+                android:background="@color/cardBackgroundColor"
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/food_joke_textView"
