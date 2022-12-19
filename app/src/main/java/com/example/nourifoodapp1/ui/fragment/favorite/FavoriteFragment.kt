@@ -2,73 +2,70 @@ package com.example.nourifoodapp1.ui.fragment.favorite
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nourifoodapp1.R
 import com.example.nourifoodapp1.databinding.FragmentFavoriteBinding
-import com.example.nourifoodapp1.utils.setupRecyclerView
 import com.example.nourifoodapp1.viewmodel.FavoriteViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
-    private val binding get() = _binding
-    @Inject lateinit var favoriteAdapter: FavoriteAdapter
+    private val binding get() = _binding!!
+    private val mAdapter: FavoriteRecipesAdapter by lazy { FavoriteRecipesAdapter(requireActivity(),favoriteViewModel) }
     private val favoriteViewModel : FavoriteViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFavoriteBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
+        binding.favoriteViewModel = favoriteViewModel
+        binding.mAdapter = mAdapter
 
-        setHasOptionsMenu(true)
-        //get favorite list
-        favoriteViewModel.readFavoriteRecipeData.observe(viewLifecycleOwner){
-            if (it.isNotEmpty()){
-                binding?.apply {
-                    noDataImageView.visibility = View.GONE
-                    noDataTextView.visibility = View.GONE
-                    favoriteRecipesRecyclerView.visibility = View.VISIBLE
-                }
-                favoriteAdapter.setData(it)
-                binding?.favoriteRecipesRecyclerView?.setupRecyclerView(LinearLayoutManager(requireContext()),favoriteAdapter)
-            }else {
-                binding?.apply {
-                    noDataImageView.visibility = View.VISIBLE
-                    noDataTextView.visibility = View.VISIBLE
-                    favoriteRecipesRecyclerView.visibility = View.GONE
-                }
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.favorite_recipes_menu, menu)
             }
 
-        }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.deleteAll_favorite_recipes_menu) {
+                    favoriteViewModel.deleteAllFavoriteRecipe()
+                    showSnackBar()
+                }
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        //on click to item
-        favoriteAdapter.setOnItemClickListener {
-            val action = FavoriteFragmentDirections.actionFavoriteRecipesFragmentToDetailActivity(it.result)
-            findNavController().navigate(action)
-        }
+        setupRecyclerView(binding.favoriteRecipesRecyclerView)
 
-        return binding!!.root
+        return binding.root
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.deleteAll_favorite_recipes_menu){
-            favoriteViewModel.deleteAllFavoriteRecipe()
-            Snackbar.make(binding!!.root,"Delete All", Snackbar.LENGTH_SHORT).show()
-        }
-        return super.onOptionsItemSelected(item)
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.adapter = mAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.favorite_recipes_menu,menu)
+    private fun showSnackBar() {
+        Snackbar.make(
+            binding.root,
+            "All recipes removed.",
+            Snackbar.LENGTH_SHORT
+        ).setAction("Okay") {}
+            .show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
+        mAdapter.clearContextualActionMode()
     }
 
 }
