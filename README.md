@@ -16,6 +16,8 @@ Android Architecture Components
 
 Kotlin Coroutines + Flow
 
+LiveData
+
 Single activity pattern
 
 Offline Cache
