@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/FoodApp1-foody/app/src/main/res/layout/activity_main.xml" value="0.32135416666666666" />
         <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/FoodApp1/app/src/main/res/drawable/ic_round_smart_display_24.xml" value="0.187" />
         <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/FoodApp1/app/src/main/res/layout/activity_main.xml" value="0.11388888888888889" />
         <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/FoodApp1/app/src/main/res/layout/fragment_detail.xml" value="0.29444444444444445" />
@@ -36,6 +37,22 @@
         <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/NouriMVVM-FoodApp1/app/src/main/res/layout/item_list_spinner.xml" value="0.32135416666666666" />
         <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/NouriMVVM-FoodApp1/app/src/main/res/layout/item_spinner.xml" value="0.32135416666666666" />
         <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/NouriMVVM-FoodApp1/app/src/main/res/menu/menu_main.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout-night/fragment_foodjoke.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/activity_detail.xml" value="0.27314814814814814" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/activity_main.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/favorite_recipes_row_layout.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.27314814814814814" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_favorite.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_foodjoke.xml" value="0.27314814814814814" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_ingredient.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_instructions.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_overview.xml" value="0.1" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/fragment_recipes.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/ingredients_row_layout.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/layout/recipes_row_layout.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/menu/food_joke_menu.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/menu/menu_main.xml" value="0.32135416666666666" />
+        <entry key="..\:/Users/IDEHAL/AndroidStudioProjects/Sample-Foody/app/src/main/res/menu/recepie_menu.xml" value="0.32135416666666666" />
         <entry key="..\:/Users/IDEHAL/Desktop/Task/FoodApp1/app/src/main/res/drawable-v24/ic_checkmark.xml" value="0.193" />
         <entry key="..\:/Users/IDEHAL/Desktop/Task/FoodApp1/app/src/main/res/drawable-v24/ic_splash_screen_light.xml" value="0.188" />
         <entry key="..\:/Users/IDEHAL/Desktop/Task/FoodApp1/app/src/main/res/drawable/gradient_overlay.xml" value="0.1625" />
